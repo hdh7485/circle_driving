@@ -33,9 +33,9 @@ class CircleDriving{
 			twist_pub_ = nh_.advertise < geometry_msgs::Twist > ("twist_msg", 10);
 			speed_ = 3;
 			wheelbase_ = 0.257;
-			target_circle_radius_ = 3.5;
+			target_circle_radius_ = 2;
 			steer_standard_ = -4.2;
-			KP_ = 2.0;
+			KP_ = -3.0;
 		}
 
 		float radian_to_angular_velocity(float radian){
@@ -47,6 +47,9 @@ class CircleDriving{
 			measured_circle_radius_ = angular_v_z_radian_ / speed_;
 			error_ = target_circle_radius_ - measured_circle_radius_;
 			steer_output_ = steer_standard_ + error_ * KP_;
+			ROS_INFO("Sensor degree Error: %f", error_);
+			ROS_INFO("Sensor radian: %f", angular_v_z_radian_);
+			ROS_INFO("Measured circle radius: %f", measured_circle_radius_);
 		}
 
 		void imuCallback(const sensor_msgs::Imu::ConstPtr& imuMsg){
@@ -55,7 +58,7 @@ class CircleDriving{
 
 			calculate_velocity();
 
-			ROS_INFO("Sensor degree velocity Z: %f", steer_output_);
+			ROS_INFO("Output degree velocity Z: %f", steer_output_);
 			twist_msg_.linear.x = speed_;
 			twist_msg_.angular.z = steer_output_;
 			twist_pub_.publish(twist_msg_);
