@@ -45,8 +45,10 @@ class CircleDriving{
 			target_circle_radius_ = 3.1;
 			//steer_standard_ = -4.1996;
 			steer_standard_ = -3.8;
-			KP_ = 0.1;
-			KI_ = 0.008;
+			//KP_ = 0.1;
+			//KP_ = 0.2;
+			KP_ = 0.20;
+			KI_ = 0.007;
 		}
 
 		float radian_to_angular_velocity(float radian){
